@@ -21,42 +21,18 @@
       #example-scanning-overlay.hidden {
         display: none;
       }
-
-      #example-loading-overlay, #example-error-overlay {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 20px;
-        border-radius: 10px;
-        display: none; /* Initially hidden */
-      }
-
-      #example-loading-overlay.hidden, #example-error-overlay.hidden {
-        display: none;
-      }
+      
     </style>
   </head>
 
   <body>
     <!-- Custom scanning overlay -->
     <div id="example-scanning-overlay" class="hidden">
+      <img src="https://github.com/augmentedfabricationlab/xmas_cards/blob/main/Weihnachtskarte_Blocks_V2_Zeichenfl%C3%A4che%201.png?raw=true" alt="Scanning" />      
       <p>Scanning...</p>
     </div>
 
-    <!-- Custom loading overlay -->
-    <div id="example-loading-overlay" class="hidden">
-      <p>Loading...</p>
-    </div>
-
-    <!-- Custom error overlay -->
-    <div id="example-error-overlay" class="hidden">
-      <p>Error loading target. Please try again.</p>
-    </div>
-
-    <a-scene mindar-image="uiScanning: #example-scanning-overlay; uiLoading: #example-loading-overlay; uiError: #example-error-overlay; imageTargetSrc: https://cdn.jsdelivr.net/gh/augmentedfabricationlab/xmas_cards@main/targets_blox.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-scene mindar-image="uiScanning: #example-scanning-overlay; imageTargetSrc: https://cdn.jsdelivr.net/gh/augmentedfabricationlab/xmas_cards@main/targets_blox.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
         <a-asset-item id="avatarModel" src="https://cdn.jsdelivr.net/gh/augmentedfabricationlab/xmas_cards@refs/heads/main/tree.gltf"></a-asset-item>
       </a-assets>
