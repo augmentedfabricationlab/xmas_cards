@@ -60,6 +60,7 @@
         font-weight: bold;
         background: linear-gradient(to right, #ff3333, #ff6b6b);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         text-shadow: 0px 2px 4px rgba(0,0,0,0.2);
         animation: float 3s ease-in-out infinite;
@@ -201,7 +202,6 @@
           position="0 0 -0.1" 
           scale="50 50 50" 
           src="#avatarModel" 
-          animation="property: position; to: 0 0 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate" 
           animation__rotation="property: rotation; to: 0 0 360; dur: 20000; loop: true; easing: linear">
         </a-gltf-model>
       </a-entity>
