@@ -1,0 +1,164 @@
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <!-- GOOGLE ANALYTICS START (Replace G-XXXXXXXXXX with your ID) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    <!-- GOOGLE ANALYTICS END -->
+
+    <style>
+      /* Main Overlay Container */
+      #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        pointer-events: none; /* Allows clicking through to the 3D scene */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        font-family: 'Georgia', serif; /* Festive font */
+        overflow: hidden;
+      }
+
+      /* Scanning Instructions (Visible initially) */
+      #scan-instructions {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 20px;
+        border-radius: 15px;
+        color: white;
+        transition: opacity 0.5s;
+      }
+      
+      .instruction-title {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+      
+      .instruction-hint {
+        font-size: 16px;
+        color: #ddd;
+      }
+
+      /* Season's Greetings Message (Hidden initially, appears on found) */
+      #greetings {
+        position: absolute;
+        top: 10%; /* Positioned near top */
+        width: 100%;
+        opacity: 0; /* Hidden by default */
+        transition: opacity 1s ease-in-out;
+      }
+
+      /* CSS Animation for the text */
+      .festive-text {
+        font-size: 40px;
+        font-weight: bold;
+        /* Reddish gradient text */
+        background: linear-gradient(to right, #ff3333, #ff6b6b);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+        animation: float 3s ease-in-out infinite;
+      }
+
+      @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+        100% { transform: translateY(0px); }
+      }
+
+      /* Utilities */
+      .hidden {
+        opacity: 0 !important;
+        pointer-events: none;
+      }
+      .visible {
+        opacity: 1 !important;
+      }
+    </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const sceneEl = document.querySelector('a-scene');
+        const target = document.querySelector('#my-target');
+        const scanInstructions = document.querySelector('#scan-instructions');
+        const greetings = document.querySelector('#greetings');
+
+        // Event: Target Found
+        target.addEventListener("targetFound", event => {
+          console.log("Target found");
+          // Hide instructions, Show greetings
+          scanInstructions.classList.add("hidden");
+          greetings.classList.add("visible");
+        });
+
+        // Event: Target Lost
+        target.addEventListener("targetLost", event => {
+          console.log("Target lost");
+          // Show instructions again (optional), Hide greetings
+          scanInstructions.classList.remove("hidden");
+          greetings.classList.remove("visible");
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <!-- UI OVERLAY -->
+    <div id="overlay">
+      <!-- Scanning Instructions -->
+      <div id="scan-instructions">
+        <div class="instruction-title">Scan the Postcard</div>
+        <div class="instruction-hint">Please move your phone slowly</div>
+        <div style="margin-top:10px; font-size: 24px;">📷</div>
+      </div>
+
+      <!-- Festive Greeting -->
+      <div id="greetings">
+        <div class="festive-text">
+          Season's Greetings<br>
+          <span style="font-size: 24px;">and a Happy New Year!</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- AR SCENE -->
+    <a-scene 
+      mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/augmentedfabricationlab/xmas_cards@main/targets_tes.mind; filterMinCF:0.0005; filterBeta: 0.001; missTolerance: 50;" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
+      
+      <a-assets>
+        <a-asset-item id="avatarModel" src="https://cdn.jsdelivr.net/gh/augmentedfabricationlab/xmas_cards@refs/heads/main/tree_tes_2.gltf"></a-asset-item>
+      </a-assets>
+
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      
+      <!-- Added ID 'my-target' to hook up events in JS -->
+      <a-entity id="my-target" mindar-image-target="targetIndex: 0">
+        <a-gltf-model 
+          rotation="0 0 0" 
+          position="0 0 -0.1" 
+          scale="50 50 50" 
+          src="#avatarModel" 
+          animation="property: position; to: 0 0 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate" 
+          animation__rotation="property: rotation; to: 0 0 360; dur: 20000; loop: true; easing: linear">
+        </a-gltf-model>
+      </a-entity>
+    </a-scene>
+  </body>
+</html>
