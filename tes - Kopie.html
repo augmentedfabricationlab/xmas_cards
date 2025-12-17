@@ -1,18 +1,42 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script data-goatcounter="https://digitalfabricationtum.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
   </head>
   <body>
-    <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/augmentedfabricationlab/xmas_cards@main/targets_tes.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false" "filterMinCF:0.1; filterBeta: 10">
+    <!-- 
+      Changes made below:
+      1. Fixed syntax: Everything is inside the mindar-image string.
+      2. filterMinCF: 0.001 -> Very low value to aggressively smooth out shaking (jitter).
+      3. filterBeta: 0.001 -> Low value to prevent jumping.
+      4. missTolerance: 50 -> The model will stay visible for 50 frames. 
+         after the image is lost/covered, preventing flickering.
+    -->
+    <a-scene 
+      mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/augmentedfabricationlab/xmas_cards@main/targets_tes.mind; filterMinCF:0.0005; filterBeta: 0.001; missTolerance: 50;" 
+      color-space="sRGB" 
+      renderer="colorManagement: true, physicallyCorrectLights" 
+      vr-mode-ui="enabled: false" 
+      device-orientation-permission-ui="enabled: false">
+      
       <a-assets>
-        <a-asset-item id="avatarModel" src="https://cdn.jsdelivr.net/gh/augmentedfabricationlab/xmas_cards@refs/heads/main/tree_tes.gltf"></a-asset-item>
+        <a-asset-item id="avatarModel" src="https://cdn.jsdelivr.net/gh/augmentedfabricationlab/xmas_cards@refs/heads/main/tree_tes_2.gltf"></a-asset-item>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      
       <a-entity mindar-image-target="targetIndex: 0">
-        <a-gltf-model rotation="0 0 0" position="0 0 -0.1" scale="50 50 50" src="#avatarModel" animation_movement="property: position; to: 0 0 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate" animation__rotation="property: rotation; to: 0 0 360; dur: 20000; loop: true; easing: linear">
+        <a-gltf-model 
+          rotation="0 0 0" 
+          position="0 0 -0.1" 
+          scale="50 50 50" 
+          src="#avatarModel" 
+          animation="property: position; to: 0 0 0.1; dur: 1000; easing: easeInOutQuad; loop: true; dir: alternate" 
+          animation__rotation="property: rotation; to: 0 0 360; dur: 20000; loop: true; easing: linear">
+        </a-gltf-model>
       </a-entity>
     </a-scene>
   </body>
